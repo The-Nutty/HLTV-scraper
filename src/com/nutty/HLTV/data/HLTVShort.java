@@ -1,3 +1,4 @@
+package com.nutty.HLTV.data;
 
 public class HLTVShort {
 	

@@ -1,3 +1,4 @@
+package com.nutty.HLTV.data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,12 +19,14 @@ public class HLTVmatch {
 	private String map1s, map3s, map2s;
 	private String HLTVodds1, HLTVodds2;
 	private String csgolodds1 = null, csgolodds2 = null;
+	private String ESportsgbets1, ESportsgbets2;
 	private Document doc;
 	private String[] streams;
 	boolean isover;//done in constructior
 	private Date Time; //only to be used it isover = false
 	private String Event;//may be null if is over = false
 	
+	//init with only url, for example if not grabed from the xml
 	public HLTVmatch(Document doctmp){
 		doc = doctmp;
 		Element elm = doc.select("#time").first();
@@ -41,6 +44,7 @@ public class HLTVmatch {
 		
 	}
 	
+	//init with the url and event name>>prefrable option if game is over or dont know the time
 	public HLTVmatch(Document doctmp, String Event){
 		doc = doctmp;
 		Element elm = doc.select("#time").first();
@@ -58,6 +62,7 @@ public class HLTVmatch {
 		this.Event = Event;
 	}
 	
+	//init with url, event and time. prefrable option always
 	public HLTVmatch(Document doctmp, String Event, String Time){
 		doc = doctmp;		
 		isover = false;
@@ -82,13 +87,25 @@ public class HLTVmatch {
 		this.Event = Event;
 	}
 		
+	//You may or may not want to set csgo odds because it require another page, this is if you do.
+	public void setallinfo(Document csgl){
+		setteams();
+		setmaps();
+		setscore();
+		setinfoandbestof();
+		setStream();
+		setHLTVodds();
+		setCSGOLodds(csgl);
+	}
 	
+	//this is if you do not want to set csgl
 	public void setallinfo(){
 		setteams();
 		setmaps();
 		setscore();
 		setinfoandbestof();
 		setStream();
+		setHLTVodds();
 	}
 	
 	public void setteams(){
@@ -169,9 +186,8 @@ public class HLTVmatch {
 	}
 
 	public void setStream(){
-		
-		String prefix = "http://www.hltv.org/error";
-		List vodsStreams = new ArrayList<String>();
+		String prefix;
+		List<String> vodsStreams = new ArrayList<String>();
 		Elements elms;
 		if (isover == true) {
 			elms = doc.select(".vod");
@@ -186,14 +202,15 @@ public class HLTVmatch {
 		}
 		Object[] ObjectList = vodsStreams.toArray();
 		streams = Arrays.copyOf(ObjectList,ObjectList.length,String[].class);
-		
+		//will be size 0 if no steams/vods exist 
 	}
-	//will error if match is over
+	
 	public void setHLTVodds(){
 		Element votes1 = doc.select("#voteteam1results").first();
 		Element votes2 = doc.select("#voteteam2results").first();
 		HLTVodds1 = votes1.text();
 		HLTVodds2 = votes2.text();
+		//will be null if match is over
 	}
 	
 	public void setCSGOLodds(Document csgl){
@@ -223,6 +240,14 @@ public class HLTVmatch {
 			
 		}
 		
+	}
+	
+	public void setEsportsbets(){
+		Element box = doc.select("a[href^=http://egamingbets.com]").first();
+		Element Team1 = box.select("[style=text-align: left;]").first();
+		Element Team2 = box.select("[style=text-align: right;]").first();
+		ESportsgbets1 = Team1.text();
+		ESportsgbets2 = Team1.text();
 	}
 	/////getters now
 	
@@ -280,18 +305,27 @@ public class HLTVmatch {
 		
 	}
 	
-	public String[] getHLTVodd(){
+	public String[] getHLTVodds(){
 		String[] ar = new String[]{HLTVodds1, HLTVodds2};
 		return ar;
 	}
 	
-	public String[] getCSGLodd(){
+	public String[] getCSGLodds(){
 		String[] ar = new String[]{csgolodds1, csgolodds2};
 		return ar;
 	} 
 	
-	//other methods
+	public String[] getESportsgbets(){
+		String[] ar = new String[]{ESportsgbets1, ESportsgbets2};
+		return ar;
+	} 
 	
+	public String GetEventName(){
+		return Event;
+	}
+	
+	//other methods
+
 	private Date StringToDate(String str) throws ParseException{
 		//string must be in format : "Thu, 08 Jan 2015 04:00:00 +0100" as from hltv xml
 		String s = str.replaceAll("[a-zA-Z,]", "");
@@ -301,14 +335,7 @@ public class HLTVmatch {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d y H:m:s Z");
         Date date = simpleDateFormat.parse(s);
         return date;
-		
-		
 	}
-	
-	public String GetEventName(){
-		return Event;
-	}
-
 }
 
 /* 

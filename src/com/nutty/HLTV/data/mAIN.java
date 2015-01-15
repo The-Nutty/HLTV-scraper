@@ -1,3 +1,4 @@
+package com.nutty.HLTV.data;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -23,7 +24,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
-
+//This class is just used for testing, can be ignored will remove later
 public class mAIN {
 
 	public static void main(String[] args) throws ParseException,
@@ -32,11 +33,15 @@ public class mAIN {
 
 		String csgolodds1 = null, csgolodds2 = null;
 		
-		Document csgl = Jsoup.connect("http://csgolounge.com/").userAgent("Mozilla").get();
+		Document csgl = Jsoup.connect("http://www.hltv.org/match/2293883-natus-vincere-epsilon-esl-pro-league-winter-2014-15").userAgent("Mozilla").get();
 		
-		Element box = csgl.select(".box").get(1);
-		Elements matches = box.select(".match:not(.notavailable)");
-		for(Element em : matches){
+		Element box = csgl.select("a[href^=http://egamingbets.com]").first();
+		Element Team1 = box.select("[style=text-align: left;]").first();
+		Element Team2 = box.select("[style=text-align: right;]").first();
+		String Esportsbets1 = Team1.text();
+		String Esportsbets2 = Team1.text();
+		System.out.println(Team2.text());
+		/*for(Element em : matches){
 			//em.text().toLowerCase());
 			int pos1 = em.text().toLowerCase().indexOf("nip".toLowerCase());//team1
 			if(!(pos1 == -1)){
@@ -59,7 +64,7 @@ public class mAIN {
 				}
 				
 			}
-			
+			*/
 		}
 
 		
@@ -74,7 +79,7 @@ public class mAIN {
 		// String str = link2.html();
 		// System.out.println(str);
 
-	}// use the output and sertch with in tha again
+	// use the output and sertch with in tha again
 
 	public static String getinfo(Document doc) throws IOException {
 		Element link2 = doc.select("#mapformatbox").first();

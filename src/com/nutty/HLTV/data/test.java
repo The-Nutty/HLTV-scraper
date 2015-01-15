@@ -1,3 +1,4 @@
+package com.nutty.HLTV.data;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 
@@ -7,7 +8,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.xml.sax.SAXException;
 
-
+//This class is just used for testing, can be ignored will remove later
 public class test {
 	
 	public static void main(String[] args) throws IOException{
@@ -17,7 +18,7 @@ public class test {
 		
 		m1.setteams();
 		m1.setCSGOLodds(Jsoup.connect("http://csgolounge.com/").userAgent("Mozilla").get());
-		System.out.println(m1.getCSGLodd()[1]);
+		System.out.println(m1.getCSGLodds()[1]);
 		
 		//System.out.println(str);
 		//SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d y H:m:s Z");
