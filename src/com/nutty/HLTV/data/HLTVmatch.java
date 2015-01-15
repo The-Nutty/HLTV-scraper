@@ -96,6 +96,7 @@ public class HLTVmatch {
 		setStream();
 		setHLTVodds();
 		setCSGOLodds(csgl);
+		setEsportsbets();
 	}
 	
 	//this is if you do not want to set csgl
@@ -106,6 +107,7 @@ public class HLTVmatch {
 		setinfoandbestof();
 		setStream();
 		setHLTVodds();
+		setEsportsbets();
 	}
 	
 	public void setteams(){
