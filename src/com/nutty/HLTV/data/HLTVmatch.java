@@ -249,7 +249,7 @@ public class HLTVmatch {
 		Element Team1 = box.select("[style=text-align: left;]").first();
 		Element Team2 = box.select("[style=text-align: right;]").first();
 		ESportsgbets1 = Team1.text();
-		ESportsgbets2 = Team1.text();
+		ESportsgbets2 = Team2.text();
 	}
 	/////getters now
 	
