@@ -221,8 +221,14 @@ public class HLTVmatch {
 		for(Element em : matches){
 			//em.text().toLowerCase());
 			int pos1 = em.text().toLowerCase().indexOf(Team1.toLowerCase());//team1
+			if(pos1 == -1){
+				pos1 = em.text().toLowerCase().indexOf(GetInitals(Team1).toLowerCase());
+			}
 			if(!(pos1 == -1)){
 				int pos2 = em.text().toLowerCase().indexOf(Team2.toLowerCase());//team2
+				if(pos2 == -1){
+					pos2 = em.text().toLowerCase().indexOf(GetInitals(Team2).toLowerCase());
+				}
 				if(!(pos2 == -1)){
 					//team1 at pos1
 					//team2 at pos2
@@ -337,6 +343,27 @@ public class HLTVmatch {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("d y H:m:s Z");
         Date date = simpleDateFormat.parse(s);
         return date;
+	}
+	
+	private String GetInitals(String Name){
+		
+		String[] nameParts;
+		if(Name.split(" ").length > 1){
+			nameParts = Name.split(" ");
+		}else if(Name.split(".").length > 1){
+			nameParts = Name.split(".");
+			
+		}else{
+			return Name;
+		}
+		
+		StringBuilder builder = new StringBuilder(3);
+		for(int i = 0; i < nameParts.length; i++)
+		{
+		    builder.append(nameParts[i].substring(0,1));
+		}
+		
+		return builder.toString();
 	}
 }
 
